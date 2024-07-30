@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script>
+        // 添加一个函数来处理 textarea 的自动高度调整
+        function adjustTextareaHeight(textarea) {
+            textarea.style.height = 'auto'; // 重置高度
+            textarea.style.height = textarea.scrollHeight + 'px'; // 设置为实际高度
+        }
+
+        window.onload = function() {
+            // 初始化 textarea 高度
+            var textarea = document.getElementById('text-input');
+            adjustTextareaHeight(textarea);
+
+            // 监听 textarea 的 input 事件
+            textarea.addEventListener('input', function() {
+                adjustTextareaHeight(this);
+            });
+        };
+
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+
+            // 显示加载指示器
+            const loadingIndicator = document.getElementById('loading-indicator');
+            loadingIndicator.style.display = 'block';
+
+            const form = document.getElementById('tts-form');
+            const formData = new FormData(form);
+            const response = await fetch('/convert', {
+                method: 'POST',
+                body: formData
+            });
+            const filepath = await response.text();
+
+            // 隐藏加载指示器
+            loadingIndicator.style.display = 'none';
+
+            createAudioBlock(filepath);
+        }
+
+        function createAudioBlock(filepath) {
+            const audioBlock = document.createElement('div');
+            audioBlock.classList.add('audio-block');
+
+            const audioUrl = `/static/audio/${filepath}`;
+            const audioElement = document.createElement('audio');
+            audioElement.src = audioUrl;
+            audioElement.controls = true;
+
+            const filenameElement = document.createElement('span');
+            filenameElement.textContent = filepath;
+
+            // 添加删除按钮
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('delete-button'); // 添加类名
+            deleteButton.textContent = '删除';
+            deleteButton.addEventListener('click', () => {
+                // 发送 DELETE 请求到服务器
+                fetch(`/delete_audio/${filepath}`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            audioBlock.remove(); // 删除 DOM 中的音频块
+                        } else {
+                            console.error('Failed to delete audio file.');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+
+            audioBlock.appendChild(audioElement);
+            audioBlock.appendChild(filenameElement);
+            audioBlock.appendChild(deleteButton); // 添加删除按钮到音频块
+
+            document.getElementById('output').appendChild(audioBlock);
+        }
+    </script>
+</head>
+<body>
+    <h1>基于edge-tts的文本转语音工具</h1>
+    <form id="tts-form" onsubmit="handleFormSubmit(event)">
+        <label for="text-input">请输入文本:</label>
+        <textarea id="text-input" name="text" placeholder="文本..." required></textarea>
+        <label for="voice-select">请选择音色:</label>
+        <select id="voice-select" name="voice" required>
+            {% for name, _ in voices.items() %}
+                <option value="{{ name }}">{{ name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">生成语音</button>
+    </form>
+    <div id="loading-indicator">正在生成语音，请稍候...</div>
+    <div id="output"></div>
+</body>
+</html>

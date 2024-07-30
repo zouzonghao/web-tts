@@ -1,0 +1,94 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"], select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+textarea {
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    resize: vertical;
+}
+button {
+    padding: 10px 20px;
+    background-color: #85c2b2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #4f9692;
+}
+
+#output {
+    margin-top: 20px;
+}
+.delete-button {
+    padding: 10px 20px;
+    background-color: #d58a9c; /* 设置背景颜色为红色 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.delete-button:hover {
+    background-color: #f5151e; /* 鼠标悬停时的背景颜色 */
+}
+.audio-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.audio-block audio {
+    width: 100%;
+    max-width: 400px;
+}
+
+.audio-block span {
+    font-size: 0.9em;
+}
+textarea {
+    min-height: 120px; 
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    resize: vertical; /* 允许垂直调整大小 */
+}
+#loading-indicator {
+    display: none;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    color: #333;
+    text-align: center;
+    margin-top: 10px;
+}
+h1 {
+    text-align: center;
+}
