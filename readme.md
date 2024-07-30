@@ -37,15 +37,17 @@ python app.py
 应用程序将在本地主机的默认端口 5000 上运行。打开浏览器并访问 [http://localhost:5000](http://localhost:5000) 来查看应用程序。
 
 ## 4. 文件结构
-**web-tts**
-    ┣━ app.py                                           *//主要的 Flask 应用程序脚本*
-    ┣━ templates
-    ┃         ┗━ index.html                       *// HTML 页面*
-    ┗━ static                                             *//存放静态资源文件* 
-                 ┣━ css
-                 ┃        ┗━ style.css               *// CSS 样式文件*
-                 ┗━ audio
-                             ┗━ output.mp3        *// 输出的音频文件*
+```sh
+- webapp  #根目录  
+  - templates     
+    - index.html   # html页面
+  - static
+    - css
+      - style.css  # 主样式表
+    - audio
+   	  - output.mp3 # 输出的语音文件     
+  - app.py   # 主要的 Flask 应用程序脚本
+```
 
 
 
