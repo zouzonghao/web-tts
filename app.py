@@ -20,7 +20,14 @@ DEFAULT_VOICE = {
 @app.route('/')
 def home():
     print("Rendering index.html")
-    return render_template('index.html', voices=DEFAULT_VOICE)
+    # 读取文件夹中的所有文件
+    files = []
+    audio_dir = os.path.join('static', 'audio')
+    for filename in os.listdir(audio_dir):
+        if filename.endswith('.mp3'):
+            files.append(filename)
+    
+    return render_template('index.html', voices=DEFAULT_VOICE, existing_files=files)
 
 @app.route('/convert', methods=['POST'])
 def convert():
@@ -61,5 +68,11 @@ async def convert_to_speech(text, voice_id, filename):
     communicate = Communicate(text, voice_id)
     await communicate.save(filename)
 
+@app.route('/get_existing_files', methods=['GET'])
+def get_existing_files():
+    audio_dir = os.path.join('static', 'audio')
+    files = [filename for filename in os.listdir(audio_dir) if filename.endswith('.mp3')]
+    return {'files': files}
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

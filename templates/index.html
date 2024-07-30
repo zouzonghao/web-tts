@@ -44,7 +44,30 @@
 
             createAudioBlock(filepath);
         }
-
+        function loadExistingFiles() {
+            fetch('/get_existing_files')
+                .then(response => response.json())
+                .then(data => {
+                    data.files.forEach(filepath => {
+                        createAudioBlock(filepath);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    
+        window.onload = function() {
+            // 初始化 textarea 高度
+            var textarea = document.getElementById('text-input');
+            adjustTextareaHeight(textarea);
+        
+            // 加载已存在的文件
+            loadExistingFiles();
+        
+            // 监听 textarea 的 input 事件
+            textarea.addEventListener('input', function() {
+                adjustTextareaHeight(this);
+            });
+        };
         function createAudioBlock(filepath) {
             const audioBlock = document.createElement('div');
             audioBlock.classList.add('audio-block');

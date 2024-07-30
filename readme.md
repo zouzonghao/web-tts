@@ -45,9 +45,27 @@ python app.py
     - css
       - style.css  # 主样式表
     - audio
-   	  - output.mp3 # 输出的语音文件     
+      - output.mp3 # 输出的语音文件     
   - app.py   # 主要的 Flask 应用程序脚本
 ```
 
+## 5. docker
 
+
+
+将`/docker/web-tts`替换为语音存放目录
+
+将`5001`替换为你想要暴露的端口
+
+**AMD64**
+
+```sh
+docker run -d -v /docker/web-tts:/usr/src/app/static/audio -p 5001:5000 --name web-tts sanqi37/web-tts
+```
+
+**ARM64**
+
+```sh
+docker run -d -v /docker/web-tts:/usr/src/app/static/audio -p 5001:5000 --name web-tts sanqi37/web-tts:1.0
+```
 
